@@ -1,5 +1,5 @@
 // loginTest.js
-
+const testData = require('./testData');
 const { Builder, By, until } = require('selenium-webdriver');
 
 async function runLoginTest(testName, username, password, expectedText) {
@@ -30,7 +30,7 @@ async function runLoginTest(testName, username, password, expectedText) {
     );
 
     const alertText = await alertElement.getText();
-    console.log('👉 Actual message:', alertText.trim());
+    console.log('Actual message:', alertText.trim());
 
     // 6. Assertion
     if (alertText.includes(expectedText)) {
@@ -47,37 +47,15 @@ async function runLoginTest(testName, username, password, expectedText) {
 }
 
   async function run() {
-  // Test 1: Valid login
-  await runLoginTest(
-    'Valid Login Test',
-    'tomsmith',
-    'SuperSecretPassword!',
-    'You logged into a secure area!'
-  );
-
-  // Test 2: Invalid password
-  await runLoginTest(
-    'Invalid Password Test',
-    'tomsmith',
-    'wrongpassword',
-    'Your password is invalid!'
-  );
-
-  // Test 3: Empty username
-  await runLoginTest(
-    'Empty Username Test',
-    '',
-    'SuperSecretPassword!',
-    'Your username is invalid!'
-  );
-
-  // Test 4: Empty Password Test
-  await runLoginTest(
-    'Empty Password Test',
-    'tomsmith',
-    '',
-    'Your password is invalid!'
-  );
+  for (let data of testData) {
+    await runLoginTest(
+      data.testName,
+      data.username,
+      data.password,
+      data.expectedText
+    );
+  }
 }
+
 
 run();
